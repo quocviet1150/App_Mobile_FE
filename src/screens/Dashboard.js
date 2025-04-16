@@ -16,7 +16,6 @@ const Dashboard = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.main}>
         <Topbar navigation={navigation} setSidebarVisible={setSidebarVisible} name="Trang chủ"/>
-
         <Background>
           <Logo />
           <Header>Let’s start</Header>

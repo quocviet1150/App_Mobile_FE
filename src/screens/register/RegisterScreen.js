@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Text } from 'react-native-paper'
 import Background from '../../components/Background'
-import Logo from '../../components/Logo'
 import Header from '../../components/Header'
 import Button from '../../components/Button'
 import TextInput from '../../components/TextInput'
@@ -51,14 +50,13 @@ export default function RegisterScreen({ navigation }) {
 
     navigation.reset({
       index: 0,
-      routes: [{ name: 'Dashboard' }],
+      routes: [{ name: 'Verify' }],
     })
   }
 
   return (
     <Background>
-      <BackButton goBack={navigation.goBack} />
-      {/* <Logo /> */}
+      {/* <BackButton goBack={navigation.goBack} /> */}
       <Header>Tạo tài khoản</Header>
       <div style={{ display: 'flex', width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
         <TextInputRegister
