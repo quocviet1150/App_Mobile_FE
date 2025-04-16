@@ -11,6 +11,7 @@ import {
   Dashboard,
   Profile
 } from './src/screens'
+import Toast from 'react-native-toast-message'
 
 const Stack = createStackNavigator()
 
@@ -19,8 +20,8 @@ export default function App() {
     <Provider theme={theme}>
       <NavigationContainer>
         <Stack.Navigator
-          // initialRouteName="StartScreen"
-          initialRouteName="Dashboard"
+          initialRouteName="StartScreen"
+          // initialRouteName="RegisterScreen"
           screenOptions={{
             headerShown: false,
           }}
@@ -36,6 +37,7 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
+      <Toast position="top" />
     </Provider>
   )
 }
