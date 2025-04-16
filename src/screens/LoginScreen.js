@@ -8,18 +8,18 @@ import Button from '../components/Button'
 import TextInput from '../components/TextInput'
 import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
-import { emailValidator } from '../helpers/emailValidator'
 import { passwordValidator } from '../helpers/passwordValidator'
+import { userNameAndEmailValidator } from '../helpers/userNameAndEmailValidator'
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState({ value: '', error: '' })
+  const [userNameOrEmail, setUserNameOrEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
 
   const onLoginPressed = () => {
-    const emailError = emailValidator(email.value)
     const passwordError = passwordValidator(password.value)
-    if (emailError || passwordError) {
-      setEmail({ ...email, error: emailError })
+    const userNameAndEmailError = userNameAndEmailValidator(userNameOrEmail.value)
+    if (passwordError || userNameAndEmailError) {
+      setUserNameOrEmail({ ...userNameOrEmail, error: userNameAndEmailError })
       setPassword({ ...password, error: passwordError })
       return
     }
@@ -34,12 +34,12 @@ export default function LoginScreen({ navigation }) {
       <Logo />
       <Header>Chào mừng bạn.</Header>
       <TextInput
-        label="Email"
+        label="Email hoặc tên đăng nhập"
         returnKeyType="next"
-        value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
-        error={!!email.error}
-        errorText={email.error}
+        value={userNameOrEmail.value}
+        onChangeText={(text) => setUserNameOrEmail({ value: text, error: '' })}
+        error={!!userNameOrEmail.error}
+        errorText={userNameOrEmail.error}
         autoCapitalize="none"
         autoCompleteType="email"
         textContentType="emailAddress"
