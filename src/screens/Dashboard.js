@@ -1,6 +1,6 @@
 // Dashboard.js
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import CustomHeader from './component/CustomHeader';
 import Footer from './component/Footer';
 
@@ -11,9 +11,15 @@ const Dashboard = ({ navigation }) => {
   }));
 
   const renderItem = ({ item }) => (
+    console.log(item.title),
+    <TouchableOpacity onPress={() => navigation.navigate('Department', { 
+      id: item.id, 
+      name: item.title 
+    })}>
     <View style={styles.item}>
       <Text style={styles.itemText}>{item.title}</Text>
     </View>
+  </TouchableOpacity>
   );
 
   return (
