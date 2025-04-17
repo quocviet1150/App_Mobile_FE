@@ -1,42 +1,43 @@
-// Footer.js
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
-const Footer = ({ navigation }) => {
+const Footer = ({ navigation, title}) => {
+  const [activeTab, setActiveTab] = useState(title);
+
+  const handleNavigation = (tab, screen) => {
+    // Cập nhật lại activeTab ngay cả khi đang ở trên màn hình đó
+    setActiveTab(tab);
+    navigation.navigate(screen); // Chuyển tới màn hình tương ứng
+  };
+
   return (
     <View style={styles.footer}>
-      <TouchableOpacity onPress={() => navigation.navigate('Overview')}>
+      <TouchableOpacity onPress={() => handleNavigation('Dashboard', 'Dashboard')}>
         <View style={styles.iconContainer}>
-          <Ionicons name="home-outline" size={24} color="#007bff" />
-          <Text style={styles.textActive}>Tổng quan</Text>
+          <Ionicons name="home-outline" size={24} color={activeTab === 'Dashboard' ? '#007bff' : '#333'} />
+          <Text style={activeTab === 'Dashboard' ? styles.textActive : styles.text}>Tổng quan</Text>
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Documents')}>
+      <TouchableOpacity onPress={() => handleNavigation('Document', 'Document')}>
         <View style={styles.iconContainer}>
-          <Ionicons name="document-text-outline" size={24} color="#333" />
-          <Text style={styles.text}>Đơn từ</Text>
+          <Ionicons name="document-text-outline" size={24} color={activeTab === 'Document' ? '#007bff' : '#333'} />
+          <Text style={activeTab === 'Document' ? styles.textActive : styles.text}>Đơn từ</Text>
         </View>
       </TouchableOpacity>
 
-      {/* <TouchableOpacity onPress={() => console.log("Center Button")}>
-        <View style={styles.centerButton}>
-          <Ionicons name="add" size={28} color="#fff" />
-        </View>
-      </TouchableOpacity> */}
-
-      <TouchableOpacity onPress={() => navigation.navigate('Timesheet')}>
+      <TouchableOpacity onPress={() => handleNavigation('Timesheet', 'Timesheet')}>
         <View style={styles.iconContainer}>
-          <MaterialIcons name="assignment" size={24} color="#333" />
-          <Text style={styles.text}>Bảng công</Text>
+          <MaterialIcons name="assignment" size={24} color={activeTab === 'Timesheet' ? '#007bff' : '#333'} />
+          <Text style={activeTab === 'Timesheet' ? styles.textActive : styles.text}>Bảng công</Text>
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('More')}>
+      <TouchableOpacity onPress={() => handleNavigation('More', 'More')}>
         <View style={styles.iconContainer}>
-          <Ionicons name="menu" size={24} color="#333" />
-          <Text style={styles.text}>Thêm</Text>
+          <Ionicons name="menu" size={24} color={activeTab === 'More' ? '#007bff' : '#333'} />
+          <Text style={activeTab === 'More' ? styles.textActive : styles.text}>Thêm</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -63,16 +64,6 @@ const styles = StyleSheet.create({
   textActive: {
     fontSize: 12,
     color: '#007bff',
-  },
-  centerButton: {
-    width: 50,
-    height: 50,
-    backgroundColor: '#ff6600',
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: -20,
-    elevation: 4,
   },
 });
 

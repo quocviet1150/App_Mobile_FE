@@ -1,6 +1,6 @@
 // Dashboard.js
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import CustomHeader from './component/CustomHeader';
 import Footer from './component/Footer';
 
@@ -32,7 +32,7 @@ const Dashboard = ({ navigation }) => {
           showsVerticalScrollIndicator={true}
         />
       </View>
-      <Footer navigation={navigation} />
+      <Footer navigation={navigation} title="Dashboard" />
     </View>
   );
 };
