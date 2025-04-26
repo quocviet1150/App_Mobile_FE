@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons, Entypo } from '@expo/vector-icons';
 
-const CustomHeader = ({ title, onBackPress, onMenuPress, showBackButton = true }) => {
+const CustomHeader = ({ title, onBackPress, showBackButton = true, onInsertEmployeePress, showInsertEmployeePress = false }) => {
   return (
     <View style={styles.container}>
       {showBackButton ? (
@@ -15,9 +15,13 @@ const CustomHeader = ({ title, onBackPress, onMenuPress, showBackButton = true }
       )}
       <Text style={styles.title}>{title}</Text>
 
-      <TouchableOpacity onPress={onMenuPress} style={styles.icon}>
-        <Entypo name="dots-three-vertical" size={18} color="black" />
-      </TouchableOpacity>
+      {showInsertEmployeePress ? (
+        <TouchableOpacity onPress={onInsertEmployeePress} style={styles.icon}>
+          <Ionicons name="add" size={24} color="green" />
+        </TouchableOpacity>
+      ) : (
+        <View style={styles.icon} />
+      )}
     </View>
   );
 };

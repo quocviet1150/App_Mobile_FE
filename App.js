@@ -15,6 +15,8 @@ import Toast from 'react-native-toast-message'
 import Verify from './src/screens/register/verify'
 import Document from './src/screens/document/Document'
 import Department from './src/screens/department/Department'
+import EmployeePopup from './src/screens/department/EmployeePopup'
+import DepartmentDetail from './src/screens/department/DepartmentDetail'
 
 const Stack = createStackNavigator()
 
@@ -37,6 +39,8 @@ export default function App() {
           <Stack.Screen name="Verify" component={Verify} />
           <Stack.Screen name="Document" component={Document} />
           <Stack.Screen name="Department" component={Department} />
+          <Stack.Screen name="EmployeePopup" component={EmployeePopup} />
+          <Stack.Screen name="DepartmentDetail" component={DepartmentDetail} />
           <Stack.Screen
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}

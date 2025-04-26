@@ -1,14 +1,21 @@
 // Dashboard.js
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import CustomHeader from './component/CustomHeader';
 import Footer from './component/Footer';
+import { TextInput } from 'react-native-paper';
 
 const Dashboard = ({ navigation }) => {
+  const [searchText, setSearchText] = useState('');
+
   const data = Array.from({ length: 40 }, (_, i) => ({
     id: `${i + 1}`,
     title: `Phòng ${i + 1}`,
   }));
+
+  const filteredData = data.filter(item =>
+    item.title.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   const renderItem = ({ item }) => (
     console.log(item.title),
@@ -27,12 +34,20 @@ const Dashboard = ({ navigation }) => {
       <CustomHeader
         title="Tổng quan"
         showBackButton={false}
-        onBackPress={() => navigation.goBack()}
-        onMenuPress={() => console.log('Menu pressed')}
+        showInsertEmployeePress={true}
+        onInsertEmployeePress={() => navigation.navigate('DepartmentDetail')}
       />
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Tìm kiếm phòng..."
+          value={searchText}
+          onChangeText={setSearchText}
+        />
+      </View>
       <View style={styles.main}>
         <FlatList
-          data={data}
+          data={filteredData}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={true}
