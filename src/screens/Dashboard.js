@@ -1,14 +1,15 @@
 // Dashboard.js
+import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import CustomHeader from './component/CustomHeader';
 import Footer from './component/Footer';
-import { TextInput } from 'react-native-paper';
 
 const Dashboard = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
 
-  const data = Array.from({ length: 40 }, (_, i) => ({
+  const data = Array.from({ length: 5 }, (_, i) => ({
     id: `${i + 1}`,
     title: `Phòng ${i + 1}`,
   }));
@@ -19,21 +20,32 @@ const Dashboard = ({ navigation }) => {
 
   const renderItem = ({ item }) => (
     console.log(item.title),
-    <TouchableOpacity onPress={() => navigation.navigate('Department', { 
-      id: item.id, 
-      name: item.title 
-    })}>
-    <View style={styles.item}>
-      <View style={styles.row}>
-        <Text style={styles.itemTitle}>{item.title}</Text>
-
-        <View style={styles.itemInfo}>
-          <Text style={styles.itemText}>Số lượng: {item.employeeCount ?? 0}</Text>
-          <Text style={styles.itemText}>Trưởng phòng: {item.managerName ?? 'Chưa có'}</Text>
+    <TouchableOpacity onPress={() =>
+      navigation.navigate('Department', {
+        id: item.id,
+        name: item.title
+      })}>
+      <View style={styles.item}>
+        <View style={styles.row}>
+          <View style={styles.itemInfo}>
+            <Text style={styles.itemText}>{item.title}</Text>
+            <Text style={styles.itemText}>Số lượng: {item.employeeCount ?? 0}</Text>
+            <Text style={styles.itemText}>Trưởng phòng: {item.managerName ?? 'Chưa có'}</Text>
+          </View>
+          <View style={styles.itemTitle}>
+            <TouchableOpacity style={{ marginLeft: 10 }}>
+              <Ionicons name="trash-outline" size={16} color="red" />
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginLeft: 10 }}>
+              <Ionicons name="create-outline" size={16} color="blue" onPress={() => navigation.navigate('DepartmentDetail', {
+                type: 'update',
+                id: item.id,
+              })} />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
-  </TouchableOpacity>
+    </TouchableOpacity>
   );
 
   return (
@@ -42,7 +54,10 @@ const Dashboard = ({ navigation }) => {
         title="Tổng quan"
         showBackButton={false}
         showInsertEmployeePress={true}
-        onInsertEmployeePress={() => navigation.navigate('DepartmentDetail')}
+        onInsertEmployeePress={() => navigation.navigate('DepartmentDetail', {
+          type: 'create',
+          id: null,
+        })}
       />
       <View style={styles.searchContainer}>
         <TextInput
@@ -75,32 +90,34 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     overflow: 'auto',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
   item: {
-    padding: 16,
+    padding: 8,
     marginVertical: 8,
     backgroundColor: '#f2f2f2',
     borderRadius: 8,
   },
-  
+
   row: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   itemTitle: {
-    width: '50%',
+    width: '15%',
     fontSize: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  
+
   itemInfo: {
-    width: '50%',
+    width: '80%',
     paddingLeft: 8,
   },
-  
+
   itemText: {
-    fontSize: 12,
+    fontSize: 16,
     color: '#555',
   },
 });

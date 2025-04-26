@@ -17,6 +17,7 @@ import Document from './src/screens/document/Document'
 import Department from './src/screens/department/Department'
 import EmployeePopup from './src/screens/department/EmployeePopup'
 import DepartmentDetail from './src/screens/department/DepartmentDetail'
+import Timesheet from './src/screens/department/Timesheet'
 
 const Stack = createStackNavigator()
 
@@ -41,6 +42,7 @@ export default function App() {
           <Stack.Screen name="Department" component={Department} />
           <Stack.Screen name="EmployeePopup" component={EmployeePopup} />
           <Stack.Screen name="DepartmentDetail" component={DepartmentDetail} />
+          <Stack.Screen name="Timesheet" component={Timesheet} />
           <Stack.Screen
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}

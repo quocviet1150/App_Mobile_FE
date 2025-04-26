@@ -1,18 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import CustomHeader from '../component/CustomHeader';
 import Footer from '../component/Footer';
 import { Picker } from 'react-native-web';
 
-const DepartmentDetail = ({ navigation }) => {
+const DepartmentDetail = ({ route, navigation }) => {
+  const { type, id } = route.params;
   const [departmentName, setDepartmentName] = useState('');
   const [selectedManager, setSelectedManager] = useState('');
+  const [employeeCount, setEmployeeCount] = useState('');
   const [errors, setErrors] = useState({});
   const [managers, setManagers] = useState([
     { id: '1', name: 'Nguyễn Văn A' },
     { id: '2', name: 'Trần Thị B' },
     { id: '3', name: 'Lê Văn C' },
   ]);
+  const [screenTitle, setScreenTitle] = useState('');
+  const [buttonName, setButtonName] = useState('');
+
+  useEffect(() => {
+    if (type === 'create') {
+      setScreenTitle('Thêm phòng ban');
+      setButtonName('Thêm mới');
+    } else if (type === 'update') {
+      setScreenTitle('Cập nhật phòng ban');
+      setButtonName('Cập nhật');
+    }
+  }, [type]);
 
   const handleSubmit = () => {
     const newErrors = {};
@@ -35,7 +49,7 @@ const DepartmentDetail = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <CustomHeader
-        title="Thêm phòng ban"
+        title={screenTitle}
         showBackButton={true}
         onBackPress={() => navigation.goBack()}
       />
@@ -69,9 +83,16 @@ const DepartmentDetail = ({ navigation }) => {
             <Text style={styles.errorText}>{errors.selectedManager}</Text>
           )}
 
+          <Text style={styles.label}>Số lượng nhân viên</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Số lương nhân viên..."
+            value={employeeCount}
+            disabled={true}
+          />
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Thêm mới</Text>
+              <Text style={styles.buttonText}>{buttonName}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -143,10 +164,12 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
   },
-  
+
   dropdownPicker: {
     color: '#333',
     fontSize: 16,
+    border: 'none',
+    backgroundColor: '#f9f9f9',
   },
   errorText: {
     fontSize: 14,

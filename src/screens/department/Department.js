@@ -1,9 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import CustomHeader from '../component/CustomHeader';
 import Footer from '../component/Footer';
-import { TextInput } from 'react-native-paper';
 
 const Department = ({ route, navigation }) => {
   const { id, name } = route.params;
@@ -32,6 +32,11 @@ const Department = ({ route, navigation }) => {
         title={nameDepartment}
         showBackButton={true}
         onBackPress={() => navigation.goBack()}
+        showInsertEmployeePress={true}
+        onInsertEmployeePress={() => navigation.navigate('EmployeePopup', {
+          type: 'create',
+          id: null,
+        })}
       />
 
       <View style={styles.searchContainer}>
@@ -58,8 +63,8 @@ const Department = ({ route, navigation }) => {
                 <Text style={styles.position}>Chức vụ: {emp.position}</Text>
                 <View style={styles.icons}>
                   <TouchableOpacity onPress={() => navigation.navigate('EmployeePopup', {
-                    employeeId: emp.id,
-                    name: emp.name
+                    type: 'update',
+                    id: emp.id,
                   })}>
                     <Ionicons name="create-outline" size={24} color="orange" />
                   </TouchableOpacity>
@@ -68,7 +73,10 @@ const Department = ({ route, navigation }) => {
                   >
                     <Ionicons name="trash-outline" size={24} color="red" />
                   </TouchableOpacity>
-                  <TouchableOpacity style={{ marginLeft: 10 }}>
+                  <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => navigation.navigate('Timesheet', {
+                    employeeId: emp.id,
+                    name: emp.name
+                  })}>
                     <Ionicons name="document-text-outline" size={24} color="red" />
                   </TouchableOpacity>
                 </View>
