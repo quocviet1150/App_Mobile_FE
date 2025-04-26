@@ -24,7 +24,14 @@ const Dashboard = ({ navigation }) => {
       name: item.title 
     })}>
     <View style={styles.item}>
-      <Text style={styles.itemText}>{item.title}</Text>
+      <View style={styles.row}>
+        <Text style={styles.itemTitle}>{item.title}</Text>
+
+        <View style={styles.itemInfo}>
+          <Text style={styles.itemText}>Số lượng: {item.employeeCount ?? 0}</Text>
+          <Text style={styles.itemText}>Trưởng phòng: {item.managerName ?? 'Chưa có'}</Text>
+        </View>
+      </View>
     </View>
   </TouchableOpacity>
   );
@@ -77,8 +84,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
     borderRadius: 8,
   },
+  
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemTitle: {
+    width: '50%',
+    fontSize: 18,
+  },
+  
+  itemInfo: {
+    width: '50%',
+    paddingLeft: 8,
+  },
+  
   itemText: {
-    fontSize: 16,
+    fontSize: 12,
+    color: '#555',
   },
 });
 
