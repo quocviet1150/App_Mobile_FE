@@ -151,7 +151,7 @@ const EmployeePopup = ({ route, navigation }) => {
                     {errors.department && <Text style={styles.errorText}>{errors.department}</Text>}
                 </View>
 
-                <View style={styles.statusContainer}>
+                <View  style={{ marginBottom: 20 }}>
                     <Text style={styles.statusLabel}>Trạng thái:</Text>
                     <Picker
                         selectedValue={status}
@@ -166,7 +166,7 @@ const EmployeePopup = ({ route, navigation }) => {
                     </Picker>
                 </View>
 
-                <View style={styles.statusContainer}>
+                <View  style={{ marginBottom: 20 }}>
                     <Text style={styles.statusLabel}>Giới tính:</Text>
                     <Picker
                         selectedValue={sex}

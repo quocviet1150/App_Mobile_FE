@@ -6,9 +6,8 @@ const Footer = ({ navigation, title}) => {
   const [activeTab, setActiveTab] = useState(title);
 
   const handleNavigation = (tab, screen) => {
-    // Cập nhật lại activeTab ngay cả khi đang ở trên màn hình đó
     setActiveTab(tab);
-    navigation.navigate(screen); // Chuyển tới màn hình tương ứng
+    navigation.navigate(screen);
   };
 
   return (
