@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import Background from '../../components/Background'
-import Header from '../../components/Header'
 import Button from '../../components/Button'
+import Header from '../../components/Header'
 import TextInput from '../../components/TextInput'
-import BackButton from '../../components/BackButton'
+import TextInputRegister from '../../components/TextInputRegister'
 import { theme } from '../../core/theme'
 import { emailValidator } from '../../helpers/emailValidator'
-import { passwordValidator } from '../../helpers/passwordValidator'
 import { nameValidator } from '../../helpers/nameValidator'
+import { passwordValidator } from '../../helpers/passwordValidator'
 import { userNameValidator } from '../../helpers/userNameValidator'
-import TextInputRegister from '../../components/TextInputRegister'
+import { apiPost } from '../../api/apiService'
+import Toast from 'react-native-toast-message'
 
 export default function RegisterScreen({ navigation }) {
   const [lastName, setLastName] = useState({ value: '', error: '' })
@@ -21,7 +22,7 @@ export default function RegisterScreen({ navigation }) {
   const [password, setPassword] = useState({ value: '', error: '' })
   const [confirmPassword, setconfirmPassword] = useState({ value: '', error: '' })
 
-  const onSignUpPressed = () => {
+  const onSignUpPressed = async () => {
     const lastNameError = nameValidator(lastName.value)
     const firstNameError = nameValidator(firstName.value)
     const userNameError = userNameValidator(userName.value)
@@ -35,28 +36,44 @@ export default function RegisterScreen({ navigation }) {
       setEmail({ ...email, error: emailError })
       setPassword({ ...password, error: passwordError })
       setconfirmPassword({ ...confirmPassword, error: confirmPasswordError })
-
       if (password.value !== confirmPassword.value) {
         setconfirmPassword({ ...confirmPassword, error: 'Mật khẩu không khớp' })
       }
       return
     }
+    try {
+      const res = await apiPost('user/register', {
+        lastName: lastName.value,
+        firstName: firstName.value,
+        username: userName.value,
+        email: email.value,
+        password: password.value,
+        repeatPassword: confirmPassword.value,
+      });
 
-    // Toast.show({
-    //   type: 'error',
-    //   text1: 'Lỗi đăng ký',
-    //   text2: 'Vui lòng kiểm tra lại thông tin.',
-    // });
-
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Verify' }],
-    })
+      if (res && res.id) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Verify' }],
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Đăng ký thất bại',
+          text2: res.message || 'Vui lòng thử lại.',
+        });
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Đăng ký thất bại',
+        text2: res.message || 'Vui lòng thử lại.',
+      });
+    }
   }
 
   return (
     <Background>
-      {/* <BackButton goBack={navigation.goBack} /> */}
       <Header>Tạo tài khoản</Header>
       <div style={{ display: 'flex', width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
         <TextInputRegister

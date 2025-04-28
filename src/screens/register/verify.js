@@ -1,27 +1,49 @@
 import React, { useState } from 'react'
+import Toast from 'react-native-toast-message'
+import { apiPost } from '../../api/apiService'
 import Background from '../../components/Background'
-import BackButton from '../../components/BackButton'
-import Logo from '../../components/Logo'
-import Header from '../../components/Header'
-import TextInput from '../../components/TextInput'
 import Button from '../../components/Button'
+import Header from '../../components/Header'
+import Logo from '../../components/Logo'
+import TextInput from '../../components/TextInput'
 import { otpValidator } from '../../helpers/otpValidator'
 
 export default function Verify({ navigation }) {
   const [otpCode, setOtpCode] = useState({ value: '', error: '' })
 
-  const sendOtpCode = () => {
-
-    const otpCodeError = otpValidator(otpCode.value)
+  const sendOtpCode = async () => {
+    const otpCodeError = otpValidator(otpCode.value);
     if (otpCodeError) {
-        setOtpCode({ ...otpCode, error: otpCodeError })
-        return
+      setOtpCode({ ...otpCode, error: otpCodeError });
+      return;
+    }
+
+    try {
+      const res = await apiPost('user/verify', {
+        token: String(otpCode.value),
+      });
+
+      if (res && res.id) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'LoginScreen' }],
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Xác thực thất bại',
+          text2: res.message || 'Vui lòng thử lại.',
+        });
       }
-     navigation.reset({
-        index: 0,
-        routes: [{ name: 'LoginScreen' }],
-      })
-  }
+    } catch (error) {
+      console.error(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Lỗi',
+        text2: 'Có lỗi xảy ra, vui lòng thử lại.',
+      });
+    }
+  };
 
   return (
     <Background>

@@ -6,28 +6,55 @@ import Logo from '../components/Logo'
 import Header from '../components/Header'
 import Button from '../components/Button'
 import TextInput from '../components/TextInput'
-import BackButton from '../components/BackButton'
 import { theme } from '../core/theme'
 import { passwordValidator } from '../helpers/passwordValidator'
 import { userNameAndEmailValidator } from '../helpers/userNameAndEmailValidator'
+import Toast from 'react-native-toast-message'
+import { apiPost } from '../api/apiService'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function LoginScreen({ navigation }) {
   const [userNameOrEmail, setUserNameOrEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
 
-  const onLoginPressed = () => {
-    const passwordError = passwordValidator(password.value)
-    const userNameAndEmailError = userNameAndEmailValidator(userNameOrEmail.value)
+  const onSignUpPressed = async () => {
+
+    const passwordError = passwordValidator(password.value);
+    const userNameAndEmailError = userNameAndEmailValidator(userNameOrEmail.value);
+
     if (passwordError || userNameAndEmailError) {
-      setUserNameOrEmail({ ...userNameOrEmail, error: userNameAndEmailError })
-      setPassword({ ...password, error: passwordError })
-      return
+      setUserNameOrEmail({ ...userNameOrEmail, error: userNameAndEmailError });
+      setPassword({ ...password, error: passwordError });
+      return;
     }
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Dashboard' }],
-    })
-  }
+
+    try {
+      const res = await apiPost('user/login', {
+        usernameOrEmail: userNameOrEmail.value,
+        password: password.value,
+      });
+
+      if (res && res.username) {
+        AsyncStorage.setItem('auth_token', res.token)
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Dashboard' }],
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Đăng nhập thất bại',
+          text2: 'Vui lòng kiểm tra lại thông tin.',
+        });
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Có lỗi xảy ra',
+        text2: 'Vui lòng thử lại sau.',
+      });
+    }
+  };
 
   return (
     <Background>
@@ -61,7 +88,7 @@ export default function LoginScreen({ navigation }) {
           <Text style={styles.forgot}>Quên mật khẩu?</Text>
         </TouchableOpacity>
       </View>
-      <Button mode="contained" onPress={onLoginPressed}>
+      <Button mode="contained" onPress={onSignUpPressed}>
         Đăng nhập
       </Button>
       <View style={styles.row}>

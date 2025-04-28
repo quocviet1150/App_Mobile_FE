@@ -1,25 +1,41 @@
-// Dashboard.js
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import CustomHeader from './component/CustomHeader';
 import Footer from './component/Footer';
+import { apiGet } from '../api/apiService';
+import Toast from 'react-native-toast-message';
 
 const Dashboard = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
+  const [data, setData] = useState([]);
 
-  const data = Array.from({ length: 5 }, (_, i) => ({
-    id: `${i + 1}`,
-    title: `Phòng ${i + 1}`,
-  }));
+  useEffect(() => {
+    fetchDepartments();
+  }, []);
 
-  const filteredData = data.filter(item =>
-    item.title.toLowerCase().includes(searchText.toLowerCase())
+  const fetchDepartments = async () => {
+    try {
+      const res = await apiGet('department/getAllDepartment');
+      setData(res);
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Có lỗi xảy ra',
+        text2: 'Vui lòng thử lại sau.',
+      });
+    }
+  };
+
+  const filteredData = (data || []).filter(item =>
+    searchText.trim() === '' || (item.title && typeof item.title === 'string' && item.title.toLowerCase().includes(searchText.toLowerCase()))
   );
 
+  console.log(filteredData);
+
+
   const renderItem = ({ item }) => (
-    console.log(item.title),
     <TouchableOpacity onPress={() =>
       navigation.navigate('Department', {
         id: item.id,
@@ -28,9 +44,9 @@ const Dashboard = ({ navigation }) => {
       <View style={styles.item}>
         <View style={styles.row}>
           <View style={styles.itemInfo}>
-            <Text style={styles.itemText}>{item.title}</Text>
-            <Text style={styles.itemText}>Số lượng: {item.employeeCount ?? 0}</Text>
-            <Text style={styles.itemText}>Trưởng phòng: {item.managerName ?? 'Chưa có'}</Text>
+            <Text style={styles.itemText}>{item.departmentName}</Text>
+            <Text style={styles.itemText}>Số lượng: {item.numberOfEmployees ?? 0}</Text>
+            <Text style={styles.itemText}>Trưởng phòng: {item.headOfDepartment ?? 'Chưa có'}</Text>
           </View>
           <View style={styles.itemTitle}>
             <TouchableOpacity style={{ marginLeft: 10 }}>
@@ -68,13 +84,18 @@ const Dashboard = ({ navigation }) => {
         />
       </View>
       <View style={styles.main}>
-        <FlatList
-          data={filteredData}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={true}
-        />
+        {filteredData.length === 0 ? (
+          <Text style={styles.noDataText}>Không có dữ liệu phù hợp</Text>
+        ) : (
+          <FlatList
+            data={filteredData}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+            showsVerticalScrollIndicator={true}
+          />
+        )}
       </View>
+
       <Footer navigation={navigation} title="Dashboard" />
     </View>
   );
