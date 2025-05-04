@@ -1,6 +1,5 @@
-import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import CustomHeader from '../component/CustomHeader';
 import Footer from '../component/Footer';
@@ -8,20 +7,8 @@ import Footer from '../component/Footer';
 const Department = ({ route, navigation }) => {
   const { id, name } = route.params;
   const nameDepartment = name || 'Phòng ban';
-  // const [employees, setEmployees] = useState([]);
-
-  const employees = [
-    {
-      id: 1,
-      name: 'Trần Văn Minh',
-      gender: 'Nam',
-      position: 'Trưởng Phòng',
-      avatar: 'https://photo.znews.vn/w960/Uploaded/mdf_eioxrd/2021_07_06/1q.jpg',
-    }
-  ];
-
+  const [employees, setEmployees] = useState([]);
   const [searchText, setSearchText] = useState('');
-
   const filteredEmployees = employees.filter((emp) =>
     emp.name.toLowerCase().includes(searchText.toLowerCase())
   );
@@ -32,11 +19,6 @@ const Department = ({ route, navigation }) => {
         title={nameDepartment}
         showBackButton={true}
         onBackPress={() => navigation.goBack()}
-        showInsertEmployeePress={true}
-        onInsertEmployeePress={() => navigation.navigate('EmployeePopup', {
-          type: 'create',
-          id: null,
-        })}
       />
 
       <View style={styles.searchContainer}>
@@ -61,25 +43,6 @@ const Department = ({ route, navigation }) => {
 
               <View style={styles.action}>
                 <Text style={styles.position}>Chức vụ: {emp.position}</Text>
-                <View style={styles.icons}>
-                  <TouchableOpacity onPress={() => navigation.navigate('EmployeePopup', {
-                    type: 'update',
-                    id: emp.id,
-                  })}>
-                    <Ionicons name="create-outline" size={24} color="orange" />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{ marginLeft: 10 }}
-                  >
-                    <Ionicons name="trash-outline" size={24} color="red" />
-                  </TouchableOpacity>
-                  <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => navigation.navigate('Timesheet', {
-                    employeeId: emp.id,
-                    name: emp.name
-                  })}>
-                    <Ionicons name="document-text-outline" size={24} color="red" />
-                  </TouchableOpacity>
-                </View>
               </View>
             </View>
           ))

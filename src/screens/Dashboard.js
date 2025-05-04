@@ -85,7 +85,9 @@ const Dashboard = ({ navigation }) => {
       </View>
       <View style={styles.main}>
         {filteredData.length === 0 ? (
-          <Text style={styles.noDataText}>Không có dữ liệu phù hợp</Text>
+          <View style={styles.noEmployee}>
+            <Text style={styles.noEmployeeText}>Không có phòng ban nào</Text>
+          </View>
         ) : (
           <FlatList
             data={filteredData}
@@ -140,6 +142,16 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 16,
     color: '#555',
+  },
+  noEmployee: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  noEmployeeText: {
+    fontSize: 16,
+    color: 'gray',
   },
 });
 

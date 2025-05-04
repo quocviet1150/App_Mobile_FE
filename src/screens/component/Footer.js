@@ -15,23 +15,23 @@ const Footer = ({ navigation, title}) => {
       <TouchableOpacity onPress={() => handleNavigation('Dashboard', 'Dashboard')}>
         <View style={styles.iconContainer}>
           <Ionicons name="home-outline" size={24} color={activeTab === 'Dashboard' ? '#007bff' : '#333'} />
-          <Text style={activeTab === 'Dashboard' ? styles.textActive : styles.text}>Tổng quan</Text>
+          <Text style={activeTab === 'Dashboard' ? styles.textActive : styles.text}>Phòng ban</Text>
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => handleNavigation('Document', 'Document')}>
+      <TouchableOpacity onPress={() => handleNavigation('Employee', 'Employee')}>
         <View style={styles.iconContainer}>
-          <Ionicons name="document-text-outline" size={24} color={activeTab === 'Document' ? '#007bff' : '#333'} />
-          <Text style={activeTab === 'Document' ? styles.textActive : styles.text}>Đơn từ</Text>
+          <Ionicons name="document-text-outline" size={24} color={activeTab === 'Employee' ? '#007bff' : '#333'} />
+          <Text style={activeTab === 'Employee' ? styles.textActive : styles.text}>Nhân Viên</Text>
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => handleNavigation('Timesheet', 'Timesheet')}>
+      {/* <TouchableOpacity onPress={() => handleNavigation('Permission', 'Permission')}>
         <View style={styles.iconContainer}>
-          <MaterialIcons name="assignment" size={24} color={activeTab === 'Timesheet' ? '#007bff' : '#333'} />
-          <Text style={activeTab === 'Timesheet' ? styles.textActive : styles.text}>Bảng công</Text>
+          <MaterialIcons name="assignment" size={24} color={activeTab === 'Permission' ? '#007bff' : '#333'} />
+          <Text style={activeTab === 'Permission' ? styles.textActive : styles.text}>Quản lý phép</Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <TouchableOpacity onPress={() => handleNavigation('More', 'More')}>
         <View style={styles.iconContainer}>
